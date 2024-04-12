@@ -1,14 +1,22 @@
-const {Builder, By, Key, until} = require('selenium-webdriver');
+import { render, fireEvent } from '@testing-library/react';
+import App from './App';
 
-async function example() {
-  let driver = await new Builder().forBrowser('chrome').build();
-  try {
-    await driver.get('http://www.example.com');
-    await driver.findElement(By.name('q')).sendKeys('webdriver', Key.RETURN);
-    await driver.wait(until.titleIs('webdriver - Google Search'), 1000);
-  } finally {
-    await driver.quit();
-  }
-}
+test('updateItemList function adds an item to the list', () => {
+  const { getByPlaceholderText, getByText } = render(<App />);
 
-example();
+  // Eingabefelder und Hinzufügen/Aktualisieren-Button finden
+  const nameInput = getByPlaceholderText('Name des Einkäufers');
+  const productInput = getByPlaceholderText('Neues Produkt');
+  const addButton = getByText('Hinzufügen');
+
+  // Benutzernamen und Produktname eingeben
+  fireEvent.change(nameInput, { target: { value: 'Max' } });
+  fireEvent.change(productInput, { target: { value: 'Milch' } });
+
+  // Hinzufügen/Aktualisieren-Button klicken
+  fireEvent.click(addButton);
+
+  // Überprüfen, ob das Element zur Liste hinzugefügt wurde
+  const listItem = getByText('Milch');
+  expect(listItem).toBeInTheDocument();
+});

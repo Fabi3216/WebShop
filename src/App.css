@@ -1,7 +1,18 @@
 body {
   background-color:rgb(104, 190, 244);
 }
+@keyframes drehen {
+  von {
+    transform: rotate(0deg);
+  }
+  bis {
+    transform: rotate(360deg);
+  }
+}
 
+.logo-drehen {
+  animation: rotate 16s linear infinite;
+}
 /* Logo */
 img {
   width: 500px;

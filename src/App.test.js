@@ -1,8 +1,8 @@
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, waitFor } from '@testing-library/react';
 import App from './App';
 
-test('updateItemList function adds an item to the list', () => {
-  const { getByPlaceholderText, getByText } = render(<App />);
+test('updateItemList function adds an item to the list', async () => {
+  const { getByPlaceholderText, getByText, getByDisplayValue } = render(<App />);
 
   // Eingabefelder und Hinzufügen/Aktualisieren-Button finden
   const nameInput = getByPlaceholderText('Name des Einkäufers');
@@ -17,6 +17,8 @@ test('updateItemList function adds an item to the list', () => {
   fireEvent.click(addButton);
 
   // Überprüfen, ob das Element zur Liste hinzugefügt wurde
-  const listItem = getByText('Milch');
-  expect(listItem).toBeInTheDocument();
+  await waitFor(() => {
+    const listItem = getByDisplayValue('Milch');
+    expect(listItem).toBeInTheDocument();
+  });
 });
